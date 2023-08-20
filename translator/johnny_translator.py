@@ -55,7 +55,7 @@ def transform_assembler_content(input_file_path=None, content_string=None):
         raise ValueError("Either input_file_path or content_string must be provided.")
 
     label_to_line = {}
-    label_line_offset = 0  # Initialize the offset for label line numbers
+    label_line_offset = 1  # Initialize the offset for label line numbers
     variables = []
     new_lines = []
     comments = {}
@@ -75,25 +75,23 @@ def transform_assembler_content(input_file_path=None, content_string=None):
 
         if line.endswith(':'):
             label = line[:-1]
-            label_to_line[label] = len(new_lines) + label_line_offset  # Adjust label line number
-            if comment:  # If there is a comment, associate it with the label
-                comments[len(new_lines)] = comment.strip()
-            new_lines.append('')  # Add an empty line to hold the label's comment
-            label_line_offset += 1  # Increment the label line offset
+            label_to_line[label] = len(new_lines) 
+            label_line_offset += 1
+            print(f"labeline offset {label_line_offset}")
         elif line.startswith("#define"):
             variables.append(line)
-        else:
+        elif line:  # Only append non-empty lines
             new_lines.append(line)
-            if comment:  # If there is a comment, associate it with the line
+            if comment and line:  # Only associate comments with non-empty and non-label lines
                 comments[len(new_lines) - 1] = comment.strip()
-
+    print("Label to Line Mapping:", label_to_line)  # Debugging print
+    
     for i, line in enumerate(new_lines):
         if "JUMP" in line:
             label = line.split()[-1]
-            line_number = label_to_line.get(label, -1) #removed -1
-            if line_number != -1 :
+            line_number = label_to_line.get(label, -1)
+            if line_number != -1:
                 new_lines[i] = f"JUMP {line_number}"
-
 
     if variables:
         code_length = len(new_lines)
@@ -108,8 +106,8 @@ def transform_assembler_content(input_file_path=None, content_string=None):
         for i, line in enumerate(new_lines)
     )
 
-
     return transformed_content
+
 
 def assembler_to_decimal(transformed_content, output_filename):
     COMMANDS = {
@@ -126,7 +124,7 @@ def assembler_to_decimal(transformed_content, output_filename):
     }
     decimal_values = []
     lines = transformed_content.strip().split('\n')
-    line_offset = 1
+    line_offset = 0
     if lines[0].strip().startswith(';'):
         lines.pop(0)
 
@@ -136,7 +134,7 @@ def assembler_to_decimal(transformed_content, output_filename):
     empty_line_count = sum(1 for line in transformed_content.strip().split('\n') if line.strip() == '')
 
     for line_number, line in enumerate(lines):
-        adjusted_line_number = line_number + line_offset
+        adjusted_line_number = line_number
         line = line.split(';')[0].strip()
         if line.startswith("#define"):
             _, var_name, _ = line.split()
@@ -185,10 +183,6 @@ def assembler_to_decimal(transformed_content, output_filename):
         extra_line_added = False
 
         for value in decimal_values:
-            if not extra_line_added and value.startswith("00"):
-                f.write('00000\n')
-                extra_line_added = True
-
             f.write(value + '\n')
 
 def main():

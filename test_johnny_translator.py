@@ -65,8 +65,7 @@ TAKE 1
 ADD 2
 JUMP loop1
                     """
-    expected_output ="""
-TAKE 1
+    expected_output ="""TAKE 1
 ADD 2
 JUMP 0
                     """
@@ -84,11 +83,9 @@ JUMP loop1
 loop2: ;comment3
 ADD 3 ;comment4
                     """
-    expected_output =""" ;comment0
-TAKE 1 ;comment1
+    expected_output ="""TAKE 1 ;comment1
 ADD 2 ;comment2
 JUMP 0
- ;comment3
 ADD 3 ;comment4
                     """
     actual_output = jt.transform_assembler_content(content_string=content_string)
