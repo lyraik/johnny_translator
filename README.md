@@ -1,6 +1,6 @@
 # Johnny Translator
 
-This is a simple Johnny Assembler to RAM code translator written in Python. It converts Johnny Assembler code into a format that can be executed by the Johnny Decimal computer simulator.
+This is a simple Johnny Assembler to RAM code translator written in Python. It converts Johnny Assembler code into a format that can be executed by the [Johnny Decimal computer simulator](https://github.com/TobisMa/johnny).
 
 ## Instructions
 
