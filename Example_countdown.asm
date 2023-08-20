@@ -1,9 +1,10 @@
+#define start_value 10
 #define save_location 0
+INC start_value
 loop_dec_to_0:
-TAKE 006
-DEC 006
+TAKE start_value
+DEC start_value
 SAVE save_location
-INC 2
-TST 6
-JUMP 0
-;this code needs a manual change ad the start value in cell 06! always store n+1 there
+INC 3
+TST start_value
+JUMP loop_dec_to_0
