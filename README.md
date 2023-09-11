@@ -45,7 +45,7 @@ If this isn't working, check out [this guide on Python shebang](https://realpyth
 | TST     | 06          | Test the accumulator's value         |
 | INC     | 07          | Increment the value at an address    |
 | DEC     | 08          | Decrement the value at an address    |
-| NULL    | 09          | No operation                         |
+| NULL    | 09          | Write Null to a certain register     |
 | HLT     | 10          | Halt the program                     |
 
 ### Variables and Labels
