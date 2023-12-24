@@ -154,8 +154,14 @@ def assembler_to_decimal(transformed_content, output_filename):
 
         if line.startswith("#define"):
             _, _, var_value = line.split()
-            decimal_value = "00" + var_value.zfill(3)
-            decimal_values.append(decimal_value)
+            # if the variable is 5 digits long, it holds a command and will be saved like that
+            if len(var_value) == 5:
+                decimal_values.append(var_value)
+                continue
+            else:
+                decimal_value = "00" + var_value.zfill(3)
+                decimal_values.append(decimal_value)
+            
             continue
 
         try:
